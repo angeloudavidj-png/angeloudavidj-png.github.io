@@ -1,0 +1,200 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import { projects, type Project } from '../../data/projects';
+
+export function getStaticPaths() {
+  return projects.map((p) => ({ params: { slug: p.slug }, props: { project: p } }));
+}
+
+const { project: p } = Astro.props as { project: Project };
+const base = import.meta.env.BASE_URL;
+---
+
+<Base title={`${p.title}, David Angelou`} description={p.summary}>
+  <article class="project">
+    <a class="back" href={`${base}#work`}>All work</a>
+    <header>
+      <p class="meta"><span>{p.context}</span> <span class="status" data-status={p.status}>{p.status}</span></p>
+      <h1>{p.title}</h1>
+      <p class="summary">{p.summary}</p>
+      <dl class="facts">
+        <div><dt>Role</dt><dd>{p.role}</dd></div>
+        <div><dt>When</dt><dd>{p.dates}</dd></div>
+      </dl>
+      {p.links && (
+        <p class="links">
+          {p.links.map((l) => <a href={l.href}>{l.label}</a>)}
+        </p>
+      )}
+    </header>
+
+    {p.figure && (
+      <figure class="figure">
+        <Image src={p.figure.src} alt={p.figure.alt} widths={[640, 1100, 1600]} sizes="(min-width: 1120px) 1072px, 100vw" />
+        <figcaption>{p.figure.caption}</figcaption>
+      </figure>
+    )}
+
+    {p.gallery && (
+      <div class="gallery">
+        {p.gallery.map((g) => (
+          <figure class="figure">
+            <Image src={g.src} alt={g.alt} widths={[400, 700, 1040]} sizes="(min-width: 900px) 520px, 100vw" />
+            <figcaption>{g.caption}</figcaption>
+          </figure>
+        ))}
+      </div>
+    )}
+
+    {p.results.length > 0 && (
+      <section aria-labelledby="results">
+        <h2 id="results">Results</h2>
+        <dl class="results">
+          {p.results.map((r) => (
+            <div><dt>{r.value}</dt><dd>{r.label}</dd></div>
+          ))}
+        </dl>
+      </section>
+    )}
+
+    <section aria-labelledby="did">
+      <h2 id="did">What I did</h2>
+      <ul class="did">
+        {p.did.map((d) => <li>{d}</li>)}
+      </ul>
+    </section>
+
+    {p.outcome && (
+      <section aria-labelledby="outcome">
+        <h2 id="outcome">Where it ended</h2>
+        <p class="outcome">{p.outcome}</p>
+      </section>
+    )}
+  </article>
+</Base>
+
+<style>
+  .project {
+    padding-top: clamp(24px, 5vw, 56px);
+  }
+  .back {
+    font-family: var(--display);
+    font-size: 0.9rem;
+  }
+  header {
+    margin-block: 20px clamp(32px, 5vw, 56px);
+  }
+  .meta {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+    font-family: var(--display);
+    font-size: 0.9rem;
+    color: var(--graphite);
+    margin: 0;
+  }
+  h1 {
+    font-size: clamp(2.1rem, 6vw, 4rem);
+    font-stretch: 118%;
+    font-weight: 720;
+    letter-spacing: -0.03em;
+    margin-block: 14px 18px;
+    max-width: 20ch;
+  }
+  .summary {
+    font-size: 1.25rem;
+    line-height: 1.45;
+    max-width: 56ch;
+    margin: 0;
+  }
+  .facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 40px;
+    margin: 24px 0 0;
+  }
+  .facts dt {
+    font-family: var(--display);
+    font-size: 0.85rem;
+    color: var(--graphite);
+  }
+  .facts dd {
+    margin: 0;
+  }
+  .links {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin: 20px 0 0;
+    font-family: var(--display);
+    font-weight: 550;
+  }
+  h2 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--graphite);
+    margin: clamp(40px, 6vw, 64px) 0 14px;
+  }
+  .results {
+    margin: 0;
+    border-top: 2px solid var(--ink);
+  }
+  .results div {
+    display: grid;
+    grid-template-columns: minmax(9rem, 14rem) 1fr;
+    gap: 20px;
+    align-items: baseline;
+    padding-block: 14px;
+    border-bottom: 1px solid var(--scribe);
+  }
+  .results dt {
+    font-family: var(--display);
+    font-stretch: 125%;
+    font-weight: 700;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    letter-spacing: -0.02em;
+    color: var(--layout-blue);
+    font-variant-numeric: tabular-nums;
+  }
+  .results dd {
+    margin: 0;
+  }
+  .did {
+    margin: 0;
+    padding-left: 1.2em;
+    max-width: var(--measure);
+  }
+  .did li + li {
+    margin-top: 8px;
+  }
+  .outcome {
+    max-width: var(--measure);
+    margin: 0;
+  }
+  .project > .figure img {
+    max-height: min(75vh, 720px);
+    object-fit: contain;
+  }
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 16px;
+    align-items: start;
+  }
+  .gallery:has(> :nth-child(4):last-child) {
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+  }
+  .gallery img {
+    aspect-ratio: 4 / 3;
+    object-fit: contain;
+  }
+  @media (max-width: 560px) {
+    .results div {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+  }
+</style>

@@ -1,0 +1,199 @@
+/* Tokens: machine-shop ink and metal. Accent is Dykem layout blue. */
+:root {
+  --aluminum: #e8ebe9;
+  --plate: #f6f7f6;
+  --ink: #16212c;
+  --graphite: #4d5864;
+  --scribe: #c3caca;
+  --layout-blue: #2447c9;
+  --layout-blue-soft: #d9e0f6;
+
+  --display: 'Archivo', system-ui, sans-serif;
+  --text: 'Source Serif 4', Georgia, serif;
+
+  --measure: 68ch;
+  --gutter: clamp(16px, 4vw, 48px);
+  --page: 1120px;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --aluminum: #121b25;
+    --plate: #18232f;
+    --ink: #e6eaee;
+    --graphite: #9fabb7;
+    --scribe: #2c3a48;
+    --layout-blue: #7d97ff;
+    --layout-blue-soft: #1f2b52;
+    color-scheme: dark;
+  }
+}
+:root[data-theme='dark'] {
+  --aluminum: #121b25;
+  --plate: #18232f;
+  --ink: #e6eaee;
+  --graphite: #9fabb7;
+  --scribe: #2c3a48;
+  --layout-blue: #7d97ff;
+  --layout-blue-soft: #1f2b52;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--aluminum);
+  color: var(--ink);
+  font-family: var(--text);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  font-optical-sizing: auto;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--layout-blue);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+a:hover {
+  text-decoration-thickness: 2px;
+}
+:focus-visible {
+  outline: 2px solid var(--layout-blue);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--display);
+  font-weight: 650;
+  line-height: 1.1;
+  margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.wrap {
+  max-width: var(--page);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.skip {
+  position: absolute;
+  left: -999px;
+}
+.skip:focus {
+  left: var(--gutter);
+  top: 8px;
+  background: var(--plate);
+  padding: 6px 10px;
+  z-index: 10;
+}
+
+/* Header */
+.site-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding-block: 20px;
+  font-family: var(--display);
+  font-size: 0.95rem;
+}
+.site-head .home {
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 650;
+  font-stretch: 112%;
+}
+.site-head nav {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.site-head nav a {
+  color: var(--graphite);
+  text-decoration: none;
+}
+.site-head nav a:hover {
+  color: var(--ink);
+}
+
+/* Footer */
+.site-foot {
+  border-top: 1px solid var(--scribe);
+  margin-top: 96px;
+  padding-block: 28px 40px;
+  color: var(--graphite);
+  font-size: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* Shared bits */
+.status {
+  display: inline-block;
+  font-family: var(--display);
+  font-size: 0.8rem;
+  font-weight: 550;
+  padding: 2px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--scribe);
+  color: var(--graphite);
+  white-space: nowrap;
+}
+.status[data-status='in progress'] {
+  border-color: var(--layout-blue);
+  color: var(--layout-blue);
+}
+
+.figure {
+  margin: 0;
+  background: var(--plate);
+  border: 1px solid var(--scribe);
+  padding: 12px;
+}
+.figure img {
+  width: 100%;
+  background: #fff;
+}
+.figure figcaption {
+  font-size: 0.9rem;
+  color: var(--graphite);
+  padding-top: 10px;
+  max-width: var(--measure);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+.foot-links {
+  display: flex;
+  gap: 20px;
+}

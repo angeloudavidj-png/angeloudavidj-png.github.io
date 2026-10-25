@@ -1,16 +1,398 @@
 ---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import { profile, projects, experience, skills } from '../data/projects';
+
+const base = import.meta.env.BASE_URL;
+const bySlug = Object.fromEntries(projects.map((p) => [p.slug, p]));
+
+// The ledger: results with the method that checked them.
+const ledger = [
+  { value: '280 N', claim: 'Vertical impact at which the scout drone frame yields', check: 'Ansys static FEA, Al 6061-T6', slug: 'bergr' },
+  { value: '±0.5%', claim: 'Predicted against published cruise range, four eVTOL architectures', check: 'Python model validated on seven aircraft', slug: 'battery-endurance' },
+  { value: '1.87', claim: 'Drop test dynamic factor that made the static load case unconservative', check: 'Newmark integration in my own MATLAB FEA', slug: 'archer-midnight-fea' },
+  { value: 'Cd ≈ 1.0', claim: 'Scout drone drag coefficient', check: 'U-M 2x2 ft wind tunnel, compared with CFD', slug: 'bergr' },
+  { value: '117 → 38', claim: 'System risk priority number over seven months', check: 'FMEA across four gate reviews', slug: 'bergr' },
+  { value: '< 1%', claim: 'Error recovering motor and blade-pass tones from IMU data', check: 'Synthetic faults plus a real PX4 log', slug: 'px4-vibration-fft' },
+];
+
+const featured = projects.filter((p) => p.figure);
+const others = projects.filter((p) => !p.figure);
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Base title={`${profile.name}, mechanical engineer`} description={`${profile.statement} ${profile.school}.`}>
+  <section class="hero" aria-labelledby="hero-name">
+    <h1 id="hero-name">{profile.name}</h1>
+    <p class="lede">{profile.statement}</p>
+    <p class="school">{profile.school}</p>
+  </section>
+
+  <section class="ledger" aria-labelledby="ledger-title">
+    <h2 id="ledger-title">Results, and how each was checked</h2>
+    <table>
+      <thead>
+        <tr><th scope="col">Result</th><th scope="col">What it is</th><th scope="col">Checked by</th></tr>
+      </thead>
+      <tbody>
+        {ledger.map((row) => (
+          <tr>
+            <td class="num">{row.value}</td>
+            <td>
+              {row.claim}
+              <a class="from" href={`${base}projects/${row.slug}/`}>{bySlug[row.slug].title}</a>
+            </td>
+            <td class="check">{row.check}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </section>
+
+  <section id="work" class="work" aria-labelledby="work-title">
+    <h2 id="work-title">Work</h2>
+
+    {featured.map((p, i) => (
+      <article class:list={['feature', { flip: i % 2 === 1 }]}>
+        <div class="feature-text">
+          <p class="meta"><span>{p.context}</span> <span class="status" data-status={p.status}>{p.status}</span></p>
+          <h3><a href={`${base}projects/${p.slug}/`}>{p.title}</a></h3>
+          <p>{p.summary}</p>
+          {p.results.length > 0 && (
+            <dl class="specs">
+              {p.results.slice(0, 2).map((r) => (
+                <div><dt>{r.value}</dt><dd>{r.label}</dd></div>
+              ))}
+            </dl>
+          )}
+        </div>
+        {p.figure && (
+          <figure class="figure">
+            <Image src={p.figure.src} alt={p.figure.alt} widths={[480, 800, 1200]} sizes="(min-width: 900px) 560px, 100vw" />
+          </figure>
+        )}
+      </article>
+    ))}
+
+    <ul class="others">
+      {others.map((p) => (
+        <li>
+          <a href={`${base}projects/${p.slug}/`}>
+            <span class="o-title">{p.title}</span>
+            <span class="o-context">{p.context}</span>
+          </a>
+          <span class="status" data-status={p.status}>{p.status}</span>
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section id="experience" class="two-col" aria-labelledby="exp-title">
+    <h2 id="exp-title">Experience</h2>
+    <ol class="timeline">
+      {experience.map((e) => (
+        <li>
+          <span class="t-dates">{e.dates}</span>
+          <span class="t-org">{e.org}</span>
+          <span class="t-role">{e.role}, {e.where}</span>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="two-col" aria-labelledby="skills-title">
+    <h2 id="skills-title">Tools and methods</h2>
+    <dl class="skills">
+      {skills.map((s) => (
+        <div><dt>{s.group}</dt><dd>{s.items.join(', ')}</dd></div>
+      ))}
+    </dl>
+  </section>
+
+  <section class="contact two-col" aria-labelledby="contact-title">
+    <h2 id="contact-title">Get in touch</h2>
+    <p>
+      I’m looking for mechanical, structures and test roles in aerospace and defense.
+      Email <a href={`mailto:${profile.email}`}>{profile.email}</a> or message me on <a href={profile.linkedin}>LinkedIn</a>.
+    </p>
+  </section>
+</Base>
+
+<style>
+  .hero {
+    padding-block: clamp(48px, 10vw, 120px) clamp(32px, 6vw, 64px);
+  }
+  .hero h1 {
+    font-size: clamp(2.6rem, 9vw, 6.5rem);
+    font-stretch: 125%;
+    font-weight: 750;
+    letter-spacing: -0.035em;
+    line-height: 0.95;
+  }
+  .lede {
+    font-size: clamp(1.25rem, 2.4vw, 1.6rem);
+    line-height: 1.35;
+    max-width: 30ch;
+    margin: 28px 0 10px;
+  }
+  .school {
+    color: var(--graphite);
+    margin: 0;
+  }
+
+  /* Ledger */
+  .ledger h2,
+  .work > h2,
+  .two-col h2 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--graphite);
+    margin-bottom: 18px;
+  }
+  .ledger table {
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 2px solid var(--ink);
+  }
+  .ledger thead th {
+    font-family: var(--display);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--graphite);
+    text-align: left;
+    padding: 10px 16px 10px 0;
+    border-bottom: 1px solid var(--scribe);
+  }
+  .ledger td {
+    padding: 18px 16px 18px 0;
+    border-bottom: 1px solid var(--scribe);
+    vertical-align: baseline;
+  }
+  .ledger td.num {
+    font-family: var(--display);
+    font-stretch: 125%;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3.6vw, 2.6rem);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    white-space: nowrap;
+    color: var(--layout-blue);
+    font-variant-numeric: tabular-nums;
+    width: 1%;
+    padding-right: clamp(16px, 3vw, 40px);
+  }
+  .ledger td.check {
+    color: var(--graphite);
+    font-size: 0.95rem;
+    width: 30%;
+  }
+  .from {
+    display: block;
+    font-family: var(--display);
+    font-size: 0.85rem;
+    margin-top: 4px;
+  }
+
+  /* Work */
+  .work {
+    margin-top: clamp(72px, 10vw, 128px);
+  }
+  .feature {
+    display: grid;
+    grid-template-columns: 1fr 1.25fr;
+    gap: clamp(24px, 4vw, 56px);
+    align-items: center;
+    padding-block: clamp(32px, 5vw, 56px);
+    border-top: 1px solid var(--scribe);
+  }
+  .feature.flip .feature-text {
+    order: 2;
+  }
+  .feature h3 {
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    font-stretch: 108%;
+    margin-block: 8px 12px;
+  }
+  .feature h3 a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+  .feature h3 a:hover {
+    color: var(--layout-blue);
+  }
+  .feature p {
+    max-width: var(--measure);
+    margin: 0;
+  }
+  .meta {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+    font-family: var(--display);
+    font-size: 0.9rem;
+    color: var(--graphite);
+  }
+  .specs {
+    margin: 22px 0 0;
+    display: grid;
+    gap: 12px;
+  }
+  .specs div {
+    display: grid;
+    grid-template-columns: minmax(6.5rem, auto) 1fr;
+    gap: 14px;
+    align-items: baseline;
+  }
+  .specs dt {
+    font-family: var(--display);
+    font-stretch: 118%;
+    font-weight: 700;
+    font-size: 1.2rem;
+    white-space: nowrap;
+  }
+  .specs dd {
+    margin: 0;
+    color: var(--graphite);
+    font-size: 0.95rem;
+  }
+
+  .others {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--scribe);
+  }
+  .others li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid var(--scribe);
+    padding-block: 18px;
+  }
+  .others a {
+    text-decoration: none;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 16px;
+    align-items: baseline;
+  }
+  .o-title {
+    font-family: var(--display);
+    font-weight: 650;
+    font-size: 1.2rem;
+    font-stretch: 108%;
+    color: var(--ink);
+  }
+  .others a:hover .o-title {
+    color: var(--layout-blue);
+  }
+  .o-context {
+    color: var(--graphite);
+    font-size: 0.95rem;
+  }
+
+  /* Experience, skills, contact */
+  .two-col {
+    display: grid;
+    grid-template-columns: 14rem 1fr;
+    gap: 24px;
+    margin-top: clamp(72px, 10vw, 112px);
+  }
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .timeline li {
+    display: grid;
+    grid-template-columns: 11rem 1fr;
+    column-gap: 20px;
+    padding-block: 14px;
+    border-bottom: 1px solid var(--scribe);
+  }
+  .t-dates {
+    grid-row: span 2;
+    color: var(--graphite);
+    font-family: var(--display);
+    font-size: 0.9rem;
+    padding-top: 3px;
+  }
+  .t-org {
+    font-family: var(--display);
+    font-weight: 650;
+  }
+  .t-role {
+    color: var(--graphite);
+  }
+  .skills {
+    margin: 0;
+  }
+  .skills div {
+    display: grid;
+    grid-template-columns: 8rem 1fr;
+    gap: 20px;
+    padding-block: 12px;
+    border-bottom: 1px solid var(--scribe);
+  }
+  .skills dt {
+    font-family: var(--display);
+    font-weight: 650;
+  }
+  .skills dd {
+    margin: 0;
+  }
+  .contact p {
+    margin: 0;
+    max-width: 52ch;
+    font-size: 1.2rem;
+  }
+
+  @media (max-width: 860px) {
+    .feature {
+      grid-template-columns: 1fr;
+    }
+    .feature.flip .feature-text {
+      order: 0;
+    }
+    .two-col {
+      grid-template-columns: 1fr;
+      gap: 4px;
+    }
+  }
+  @media (max-width: 640px) {
+    .ledger thead {
+      position: absolute;
+      left: -999px;
+    }
+    .ledger tr {
+      display: grid;
+      grid-template-columns: 1fr;
+      border-bottom: 1px solid var(--scribe);
+      padding-block: 16px;
+    }
+    .ledger td {
+      border: 0;
+      padding: 0;
+    }
+    .ledger td.num {
+      width: auto;
+      margin-bottom: 8px;
+    }
+    .ledger td.check {
+      width: auto;
+      margin-top: 6px;
+    }
+    .timeline li,
+    .skills div {
+      grid-template-columns: 1fr;
+      gap: 2px;
+    }
+    .t-dates {
+      grid-row: auto;
+    }
+    .others li {
+      align-items: flex-start;
+    }
+  }
+</style>
