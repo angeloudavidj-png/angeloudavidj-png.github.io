@@ -29,6 +29,11 @@ const base = import.meta.env.BASE_URL;
       )}
     </header>
 
+    <section aria-labelledby="goal">
+      <h2 id="goal">Goal</h2>
+      <p class="prose">{p.goal}</p>
+    </section>
+
     {p.figure && (
       <figure class="figure">
         <Image src={p.figure.src} alt={p.figure.alt} widths={[640, 1100, 1600]} sizes="(min-width: 1120px) 1072px, 100vw" />
@@ -52,11 +57,18 @@ const base = import.meta.env.BASE_URL;
         <h2 id="results">Results</h2>
         <dl class="results">
           {p.results.map((r) => (
-            <div><dt>{r.value}</dt><dd>{r.label}</dd></div>
+            <div><dt>{r.value}</dt><dd>{r.label}{r.check && <span class="check">Checked by: {r.check}</span>}</dd></div>
           ))}
         </dl>
       </section>
     )}
+
+    <section aria-labelledby="progress">
+      <h2 id="progress">What got done</h2>
+      <ul class="did">
+        {p.progress.map((d) => <li>{d}</li>)}
+      </ul>
+    </section>
 
     <section aria-labelledby="did">
       <h2 id="did">What I did</h2>
@@ -65,12 +77,26 @@ const base = import.meta.env.BASE_URL;
       </ul>
     </section>
 
-    {p.outcome && (
-      <section aria-labelledby="outcome">
-        <h2 id="outcome">Where it ended</h2>
-        <p class="outcome">{p.outcome}</p>
+    {p.challenges && (
+      <section aria-labelledby="challenges">
+        <h2 id="challenges">Challenges overcome</h2>
+        <ol class="challenges">
+          {p.challenges.map((c) => (
+            <li>
+              <h3>{c.title}</h3>
+              <p>{c.detail}</p>
+            </li>
+          ))}
+        </ol>
       </section>
     )}
+
+    <section aria-labelledby="next">
+      <h2 id="next">What still needs work</h2>
+      <ul class="did">
+        {p.next.map((d) => <li>{d}</li>)}
+      </ul>
+    </section>
   </article>
 </Base>
 
@@ -161,6 +187,40 @@ const base = import.meta.env.BASE_URL;
   .results dd {
     margin: 0;
   }
+  .results .check {
+    display: block;
+    margin-top: 4px;
+    font-size: 0.9rem;
+    color: var(--graphite);
+  }
+  .challenges {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    counter-reset: ch;
+    max-width: var(--measure);
+  }
+  .challenges li {
+    counter-increment: ch;
+    padding-block: 16px;
+    border-top: 1px solid var(--scribe);
+  }
+  .challenges li:first-child {
+    border-top: 2px solid var(--ink);
+  }
+  .challenges h3 {
+    font-family: var(--display);
+    font-size: 1.15rem;
+    font-weight: 650;
+    margin: 0 0 8px;
+  }
+  .challenges h3::before {
+    content: counter(ch) '. ';
+    color: var(--layout-blue);
+  }
+  .challenges p {
+    margin: 0;
+  }
   .did {
     margin: 0;
     padding-left: 1.2em;
@@ -169,7 +229,7 @@ const base = import.meta.env.BASE_URL;
   .did li + li {
     margin-top: 8px;
   }
-  .outcome {
+  .prose {
     max-width: var(--measure);
     margin: 0;
   }
