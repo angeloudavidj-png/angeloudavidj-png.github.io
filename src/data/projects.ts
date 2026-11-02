@@ -55,6 +55,7 @@ export interface Project {
   did: string[];
   next: string[];
   results: { value: string; label: string; check?: string }[];
+  building?: { title: string; detail: string }[];
   challenges?: { title: string; detail: string }[];
   figure?: Figure;
   gallery?: Figure[];
@@ -99,7 +100,7 @@ export const projects: Project[] = [
       { value: '1.5 m/s', label: 'horizontal touchdown limit for the retrieval drone' },
       { value: '±8 mm', label: 'charging dock alignment tolerance, ±15° in rotation, 3.81 cm capture range' },
       { value: 'Cd ≈ 1.0', label: 'scout drone drag coefficient from wind tunnel data', check: 'U-M 2x2 ft wind tunnel, compared with CFD' },
-      { value: '117 → 38', label: 'system risk priority number over seven months of FMEA-driven fixes', check: 'FMEA across four gate reviews' },
+      { value: '119 → 38', label: 'system risk priority number from PDR to CDR, through FMEA-driven fixes', check: 'FMEA across four gate reviews' },
     ],
     challenges: [
       {
@@ -153,7 +154,7 @@ export const projects: Project[] = [
     goal:
       'Cut the dispatch delay in cardiac emergencies, where every minute without defibrillation lowers survival by 7 to 10%. A dispatcher speaks the mission in plain English, the drone flies to the scene ahead of responders, and the payload streams live video with detected objects back to dispatch. The payload is meant to bring that autonomy to any drone.',
     progress: [
-      'Payload designed, built and attached to the Freefly Alta X, then tested tethered with propellers off at MCity.',
+      'Payload designed, built, integrated on the Freefly Alta X and flown at MCity.',
       'GPS and landmark navigation working in simulation.',
       'OpenCV object detection working in simulation.',
       'Voice commands partly working in simulation (Whisper speech-to-text into GPT-4o command parsing).',
@@ -168,7 +169,6 @@ export const projects: Project[] = [
       'Wrote the team’s technical reference covering structural, thermal, vibration and aerodynamic analysis.',
     ],
     next: [
-      'First flight test on the real drone.',
       'Autonomous search pattern.',
       'Autonomous navigation to a detected object.',
       'More robust object detection.',
@@ -183,7 +183,7 @@ export const projects: Project[] = [
       {
         title: 'About 50 W of heat in a one-liter box',
         detail:
-          'The Jetson Orin NX and its power converter put out about 50 W inside an enclosure of roughly one liter, so the air inside heats up fast. That ruled out PLA, the default printing plastic: its heat deflection temperature of 55 to 60°C is about what the Jetson\'s surface reaches. I led a material trade across PLA, PETG, ABS, ASA, nylon and aluminum and chose PETG (75 to 80°C), which prints reliably, paired with a 40 mm blower that pulls air over the heatsink and out through side vents. We also fixed an early stacking mistake that had the Jetson above the DC-DC converter. Heat rises, so the corrected stack puts the Jetson below and the converter above, which also made it easier to service. The plan before first flight is a 20-minute bench test under load with the junction kept below 85°C.',
+          'The Jetson Orin NX and its power converter put out about 50 W inside an enclosure of roughly one liter, so the air inside heats up fast. That ruled out PLA, the default printing plastic: its heat deflection temperature of 55 to 60°C is about what the Jetson\'s surface reaches. I led a material trade across PLA, PETG, ABS, ASA, nylon and aluminum and chose PETG (75 to 80°C), which prints reliably, paired with a 40 mm blower that pulls air over the heatsink and out through side vents. We also fixed an early stacking mistake that had the Jetson above the DC-DC converter. Heat rises, so the corrected stack puts the Jetson below and the converter above, which also made it easier to service. The bench test plan is 20 minutes under load with the junction kept below 85°C.',
       },
       {
         title: 'Rotor vibration blurring the camera',
@@ -193,7 +193,7 @@ export const projects: Project[] = [
       {
         title: 'Mounting to a drone we couldn’t modify',
         detail:
-          'The payload had to go onto the Freefly Alta X without drilling or changing the airframe, and it had to sit on the centerline. A payload off center by more than 1 to 2 cm would upset the flight controller. I mounted it to the Alta X\'s 12 mm rails with MS21919 cushioned aerospace clamps, matched to the rail diameter within ±0.5 mm and spaced 149 to 150 mm apart, torqued to spec and safety-wired. The enclosure itself is a boat-hull shape (210 x 165 x 130 mm) to cut drag over a plain box. The payload was attached and tested tethered, with propellers off, at MCity.',
+          'The payload had to go onto the Freefly Alta X without drilling or changing the airframe, and it had to sit on the centerline. A payload off center by more than 1 to 2 cm would upset the flight controller. I mounted it to the Alta X\'s 12 mm rails with MS21919 cushioned aerospace clamps, matched to the rail diameter within ±0.5 mm and spaced 149 to 150 mm apart, torqued to spec and safety-wired. The enclosure itself is a boat-hull shape (210 x 165 x 130 mm) to cut drag over a plain box. The payload was integrated this way and flown at MCity.',
       },
     ],
     figure: {
@@ -246,15 +246,30 @@ export const projects: Project[] = [
       'Ran static, walking and roof-mounted drive tests, including a 67 minute drive.',
       'Traced a 65.6 mm RTK against PPK height offset to missing antenna calibration data and brought the two within 0.6 mm.',
       'Wrote the test report TG-GNSS-TR-001, now at revision E.',
-      'Built the concept airframe in build123d (221 bodies) and a variant with the Livox Mid-360 LiDAR tipped 38° on a printed wedge so its scan reaches straight down.',
+      'Built the concept airframe in SolidWorks (221 bodies) and a variant with the Livox Mid-360 LiDAR tilted 38° on a printed wedge, so it scans both the building below and obstacles in the drone’s path while minimizing how much of the scan hits the drone.',
       'Ray-cast the LiDAR scan against the airframe to compare the level and tilted mounts, and checked the new parts for clashes, mass and CG shift.',
     ],
     next: [
+      'Data filtration: filter and thin the LiDAR point clouds so they open in survey software. A working surveyor told us clouds over 50 million points freeze Civil 3D, so the delivered model has to be thinned and classified.',
+      'Flight controller customization: bring the firmware up in simulation and then on the bench, tune it, and implement the failsafes, geofence and correction-age check.',
+      'Mass budget and motor tests: bring down the concept’s estimated 3.1 kg all-up mass and measure real thrust from the motor options on a test stand.',
+      'Build the v1 drone and test it in a live environment: bench, tethered and simulation tests first, then autonomous mapping flights with an accuracy report against independent checkpoints, by April 2027.',
       'Move the battery bay about 11 mm forward to bring the CG back to center with the tilted LiDAR.',
       'Swap the PETG wedge for metal: Livox recommends mounting the LiDAR on metal for heat. A pocketed 6061 wedge would meet that, at more mass.',
       'Calibrate the 38° tilt into the LiDAR-to-IMU boresight once, and lock it.',
       'Lock the remaining placeholder requirement numbers and freeze them at SRR.',
-      'Build and fly the v1 drone by April 2027.',
+    ],
+    building: [
+      {
+        title: 'A custom flight controller',
+        detail:
+          'We are building a custom flight controller for the mission. It has to run the survey autonomously and fail safely: geofence, operator override, health monitoring of every critical subsystem, and defined responses to faults such as losing the command link. It also carries a lesson from our own GNSS testing: the receiver can report a FIXED solution while its position drifts, so anything using position data checks correction age as well.',
+      },
+      {
+        title: 'Ground control stations',
+        detail:
+          'We are also building the ground control stations the operator flies the mission from. The operator can upload, start, pause and recall a mission, and sees live battery charge, link status, flight mode, mission progress, altitude and position. The ground side also delivers the RTK corrections that keep the drone’s positioning accurate across a session.',
+      },
     ],
     results: [
       { value: '3.8 mm', label: 'horizontal RMSE in static RTK, against a 10 mm requirement (precision only; accuracy needs a surveyed truth point)', check: 'Two static sessions of 38 and 51 min on consecutive days' },

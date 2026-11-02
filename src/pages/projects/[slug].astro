@@ -63,6 +63,20 @@ const base = import.meta.env.BASE_URL;
       </section>
     )}
 
+    {p.building && (
+      <section aria-labelledby="building">
+        <h2 id="building">What we’re building</h2>
+        <ol class="challenges">
+          {p.building.map((c) => (
+            <li>
+              <h3>{c.title}</h3>
+              <p>{c.detail}</p>
+            </li>
+          ))}
+        </ol>
+      </section>
+    )}
+
     <section aria-labelledby="progress">
       <h2 id="progress">What got done</h2>
       <ul class="did">
