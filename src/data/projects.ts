@@ -11,6 +11,8 @@ import bergrSystem from '../assets/figures/bergr-system.jpg';
 import bergrScout from '../assets/figures/bergr-scout.png';
 import bergrRover from '../assets/figures/bergr-rover.png';
 import bergrDock from '../assets/figures/bergr-dock.png';
+import bergrScoutCad from '../assets/figures/bergr-scout-cad.png';
+import bergrRetrievalCad from '../assets/figures/bergr-retrieval-cad.png';
 import vtiMcity from '../assets/figures/vti-mcity.jpg';
 import vtiMounted from '../assets/figures/vti-mounted.png';
 import vtiHullCad from '../assets/figures/vti-hull-cad.jpg';
@@ -71,7 +73,7 @@ export const projects: Project[] = [
     status: 'complete',
     role: 'Only mechanical engineer on a 15-person team',
     summary:
-      'A ground rover that hosts, charges and talks to two autonomous drones: a scout that searches an area for targets and a heavy-lift drone that retrieves them.',
+      'A ground rover that hosts, charges and talks to two autonomous drones: a scout that searches an area for targets and a heavy-lift drone that retrieves them. The full system did not fly integrated: the scout’s power board failed about an inch off the ground, and the test data went to the next cohort.',
     goal:
       'Give Belcan a rover that hosts, charges and talks to a fleet of drones that scout a 930 m² area in 7 minutes, find targets and retrieve payloads up to 1 lb, for under $10,000 a year. BERGR was year two of a three-year program: add a scout drone, integrate the heavy-lift drone inherited from the year before, build the rover’s power and communications module, and give all three one user interface.',
     progress: [
@@ -86,6 +88,7 @@ export const projects: Project[] = [
       'Ran Ansys structural FEA on both drones to set landing limits against Al 6061-T6 yield.',
       'Designed the magnetic charging alignment with 8-pin pogo-pin docking connectors.',
       'Ran the scout drone body in the U-M 2x2 ft wind tunnel and compared measured drag with CFD.',
+      'Contributed to the full Siemens NX models of both drones and designed structural components in NX.',
       'Machined structural brackets on mill and lathe, and designed gear train components using GD&T and tolerance stack-ups.',
       'Built the Cameo MBSE model and carried requirement traceability through SRR, PDR, CDR and FRR.',
     ],
@@ -116,7 +119,7 @@ export const projects: Project[] = [
       {
         title: 'No drag data for the scout drone',
         detail:
-          'Belcan required the system to work in winds up to a set limit, but the scout drone had no drag data to check that against. I ran its body in the U-M 2x2 ft wind tunnel at 10 to 40 mph and measured drag from 0.48 N to 5.65 N, which gave a drag coefficient of about 1.0, and compared it with CFD. Feeding that into a takeoff-deflection model gave a maximum launch wind of 91.6 km/h. With a safety factor of 2.5, the operational limit came out at 33.6 km/h, well above Ann Arbor\'s 26.9 km/h average, which closed the environmental requirement.',
+          'Belcan required the system to work in winds up to a set limit, but the scout drone had no drag data to check that against. I ran its body in the U-M 2x2 ft wind tunnel at 10 to 40 mph and measured drag from 0.48 N to 5.65 N, which gave a drag coefficient of about 1.0, and compared it with CFD. Feeding that into a takeoff-deflection model gave a maximum launch wind of 91.6 km/h for the scout and 84.2 km/h for the retrieval drone. With a safety factor of 2.5 on the lower limit, the operational limit came out at about 33.6 km/h, well above Ann Arbor\'s 26.9 km/h average, which closed the environmental requirement.',
       },
     ],
     figure: {
@@ -125,6 +128,16 @@ export const projects: Project[] = [
       caption: 'The rover module frame in the lab, with the retrieval hexacopter and the scout quadcopter on their pads.',
     },
     gallery: [
+      {
+        src: bergrScoutCad,
+        alt: 'Siemens NX CAD model of the scout quadcopter in isometric view, with landing gear and avionics on the center plate.',
+        caption: 'Scout drone in Siemens NX, from the preliminary design review.',
+      },
+      {
+        src: bergrRetrievalCad,
+        alt: 'Siemens NX CAD model of the retrieval hexacopter in isometric view, with its arm and soft end effector hanging below the frame.',
+        caption: 'Retrieval drone with arm and end effector in Siemens NX, from the preliminary design review.',
+      },
       {
         src: bergrScout,
         alt: 'Close-up of the scout drone avionics: power distribution board, speed controller wiring and a telemetry radio labelled Mason.',
@@ -154,7 +167,7 @@ export const projects: Project[] = [
     goal:
       'Cut the dispatch delay in cardiac emergencies, where every minute without defibrillation lowers survival by 7 to 10%. A dispatcher speaks the mission in plain English, the drone flies to the scene ahead of responders, and the payload streams live video with detected objects back to dispatch. The payload is meant to bring that autonomy to any drone.',
     progress: [
-      'Payload designed, built, integrated on the Freefly Alta X and flown at MCity.',
+      'Boat-hull payload designed, built and mounted on the Freefly Alta X. A preliminary payload box flew on the Alta X at MCity.',
       'GPS and landmark navigation working in simulation.',
       'OpenCV object detection working in simulation.',
       'Voice commands partly working in simulation (Whisper speech-to-text into GPT-4o command parsing).',
@@ -164,11 +177,12 @@ export const projects: Project[] = [
     did: [
       'Designed a PETG boat-hull enclosure (210 x 165 x 130 mm) targeting 30 to 45% drag reduction, mounted to the Freefly Alta X rail with Adel clamps.',
       'Designed the 44.4 V to 12 V DC-DC power conversion for the Jetson Orin NX.',
-      'Selected rubber-in-shear isolation mounts tuned above 50 Hz to protect compute and camera from rotor vibration.',
+      'Selected rubber-in-shear isolation mounts meant to decouple compute and camera from rotor vibration above about 50 Hz.',
       'Led the PETG, ABS and aluminum material trade at the Jetson’s 10 to 40 W heat load.',
       'Wrote the team’s technical reference covering structural, thermal, vibration and aerodynamic analysis.',
     ],
     next: [
+      'Flight test the boat-hull enclosure.',
       'Autonomous search pattern.',
       'Autonomous navigation to a detected object.',
       'More robust object detection.',
@@ -177,29 +191,29 @@ export const projects: Project[] = [
     results: [
       { value: '≤ 1.16 kg', label: 'estimated payload mass (0.76 to 1.16 kg) on a 35 lb capacity octorotor' },
       { value: '30 to 45%', label: 'targeted drag reduction from the boat-hull form' },
-      { value: '> 50 Hz', label: 'isolation frequency of the vibration mounts' },
+      { value: '~50 Hz', label: 'design target: the mounts decouple the enclosure from rotor vibration above this frequency' },
     ],
     challenges: [
       {
         title: 'About 50 W of heat in a one-liter box',
         detail:
-          'The Jetson Orin NX and its power converter put out about 50 W inside an enclosure of roughly one liter, so the air inside heats up fast. That ruled out PLA, the default printing plastic: its heat deflection temperature of 55 to 60°C is about what the Jetson\'s surface reaches. I led a material trade across PLA, PETG, ABS, ASA, nylon and aluminum and chose PETG (75 to 80°C), which prints reliably, paired with a 40 mm blower that pulls air over the heatsink and out through side vents. We also fixed an early stacking mistake that had the Jetson above the DC-DC converter. Heat rises, so the corrected stack puts the Jetson below and the converter above, which also made it easier to service. The bench test plan is 20 minutes under load with the junction kept below 85°C.',
+          'The Jetson Orin NX and its power converter put out about 50 W inside an enclosure of roughly one liter, so the air inside heats up fast. That ruled out PLA, the default printing plastic: its heat deflection temperature of 55 to 60°C is about what the Jetson\'s surface reaches. I led a material trade across PLA, PETG, ABS, ASA, nylon and aluminum and chose PETG (75 to 80°C), which prints reliably, paired with a 40 mm blower that pulls air over the heatsink and out through side vents. We also fixed an early stacking mistake that had the Jetson above the DC-DC converter. Heat rises, so the corrected stack puts the Jetson below and the converter above, which also made it easier to service. The planned bench test is 20 minutes under load with the junction kept below 85°C.',
       },
       {
         title: 'Rotor vibration blurring the camera',
         detail:
-          'Even with the Alta X\'s ActiveBlade system cutting peak vibration to a fifth, residual vibration at motor frequencies and airframe resonances remains. The ZED X One camera blurs and shows shutter artifacts above about 50 Hz. I isolated the whole enclosure from its clamp plate with four rubber-in-shear grommets, one per corner, sized to decouple everything above about 50 Hz, so the camera and compute ride on their own soft mount instead of the frame.',
+          'Even with the Alta X\'s ActiveBlade system cutting peak vibration to a fifth, residual vibration at motor frequencies and airframe resonances remains. The ZED X One camera blurs and shows shutter artifacts above about 50 Hz. I isolated the whole enclosure from its clamp plate with four rubber-in-shear grommets, one per corner, intended to decouple everything above about 50 Hz, so the camera and compute ride on their own soft mount instead of the frame.',
       },
       {
         title: 'Mounting to a drone we couldn’t modify',
         detail:
-          'The payload had to go onto the Freefly Alta X without drilling or changing the airframe, and it had to sit on the centerline. A payload off center by more than 1 to 2 cm would upset the flight controller. I mounted it to the Alta X\'s 12 mm rails with MS21919 cushioned aerospace clamps, matched to the rail diameter within ±0.5 mm and spaced 149 to 150 mm apart, torqued to spec and safety-wired. The enclosure itself is a boat-hull shape (210 x 165 x 130 mm) to cut drag over a plain box. The payload was integrated this way and flown at MCity.',
+          'The payload had to go onto the Freefly Alta X without drilling or changing the airframe, and it had to sit on the centerline. A payload off center by more than 1 to 2 cm would upset the flight controller. I mounted it to the Alta X\'s 12 mm rails with MS21919 cushioned aerospace clamps, matched to the rail diameter within ±0.5 mm and spaced 149 to 150 mm apart, torqued to spec and safety-wired. The enclosure itself is a boat-hull shape (210 x 165 x 130 mm) to cut drag over a plain box. The enclosure was mounted this way. The MCity flight carried a preliminary payload box.',
       },
     ],
     figure: {
       src: vtiMcity,
       alt: 'Freefly Alta X octorotor on an asphalt test track with its propellers removed and a red payload box attached beneath the frame.',
-      caption: 'Payload attached under the Freefly Alta X at MCity, with propellers removed for ground testing.',
+      caption: 'Preliminary payload box attached under the Freefly Alta X at MCity, with propellers removed for ground testing.',
     },
     gallery: [
       {
@@ -416,15 +430,15 @@ export const projects: Project[] = [
     summary:
       'A Python model that predicts hover endurance, forward-flight range and power curves for multirotors and eVTOLs, from rotor momentum theory plus a wing-borne cruise model.',
     goal:
-      'Predict how long and how far a rotorcraft can fly, from a consumer quadcopter up to a passenger eVTOL, with one model, and check every prediction against published figures.',
+      'Predict how long and how far a rotorcraft can fly, from a consumer quadcopter up to a passenger eVTOL, with one model, and compare every prediction with published figures. Battery capacity for three of the eVTOLs and one takeoff mass are engineering estimates, and each eVTOL’s Cd₀ is back-solved to match its published range.',
     progress: [
       'Six versions: v1 hover-only momentum theory, v2 rotor profile drag, v3 wing-borne cruise, v4 four eVTOL architectures, v5 physics extensions, v6 design-your-own-aircraft mode and a compare tab.',
       'v5 added seven opt-in extensions, all backward compatible: smooth transition, μ-scaling, voltage sag, ground effect, cooling, wind and vortex ring state.',
-      'Validated on seven aircraft with full source citations, covered by 33 regression tests, and live as a Streamlit app under the MIT license.',
+      'Compared with seven aircraft with full source citations, covered by 33 regression tests, and live as a Streamlit app under the MIT license.',
     ],
     did: [
       'Built it up over six versions, from hover-only momentum theory to a design-your-own-aircraft mode.',
-      'Validated against seven real aircraft, from a 0.9 kg DJI Mavic 3 to the 2,948 kg Archer Midnight.',
+      'Compared the model with seven real aircraft, from a 0.9 kg DJI Mavic 3 to the 2,948 kg Archer Midnight.',
       'Covered four eVTOL architectures (tilt-rotor, lift+cruise, lift+pusher, tilt+lift) with one code path.',
       'Shipped an interactive Streamlit app and a regression test suite.',
     ],
@@ -433,14 +447,15 @@ export const projects: Project[] = [
       'Bring the README and deploy notes up to the v6 numbers (they still quote older test counts and accuracy).',
     ],
     results: [
-      { value: '±0.5%', label: 'every eVTOL cruise range prediction against the published figure', check: 'Python model validated on seven aircraft' },
-      { value: '0.43%', label: 'largest tuned hover endurance error' },
-      { value: '3,300x', label: 'takeoff mass range covered by the validation set' },
+      { value: '−4.7% to +4.8%', label: 'DJI Mavic 3 max range and flight time against published specs', check: 'Comparison with 30 km and 46 min published figures' },
+      { value: '±0.1%', label: 'eVTOL cruise range after calibration: each aircraft’s Cd₀ is back-solved to match the published figure, so this is a fit, not an independent check', check: 'Comparison with the same published range figures used for the fit' },
+      { value: '29% → 0.64%', label: 'largest hover endurance error, default parameters against per-aircraft tuned ones', check: 'Seven aircraft. eVTOL references are derived from rotor theory and battery capacity, since makers don’t publish hover endurance' },
+      { value: '3,300x', label: 'takeoff mass range covered by the comparison set' },
     ],
     figure: {
       src: becEvtol,
       alt: 'Power required against cruise speed for four eVTOLs, and a bar chart of predicted against published range.',
-      caption: 'One model, four eVTOL architectures, predicted range against each manufacturer’s published figure.',
+      caption: 'One model, four eVTOL architectures, predicted range against each manufacturer’s published figure, with Cd₀ back-solved to match it.',
     },
     links: [
       { label: 'Live app', href: 'https://david-angelou-bec.streamlit.app' },
@@ -492,7 +507,7 @@ export const projects: Project[] = [
 export const experience = [
   { org: 'VTI Aerospace Research', role: 'Researcher, physical payload lead', dates: 'Jan 2026 to present', where: 'Ann Arbor, MI' },
   { org: 'ME 350 project', role: 'Hardware lead', dates: 'Jan to Apr 2026', where: 'Ann Arbor, MI' },
-  { org: 'Belcan Aerospace (BERGR)', role: 'Mechanical engineer', dates: 'Aug 2025 to May 2026', where: 'Ann Arbor, MI' },
+  { org: 'BERGR, Belcan-sponsored student program', role: 'Mechanical engineer', dates: 'Aug 2025 to May 2026', where: 'Ann Arbor, MI' },
   { org: 'Welding certification program', role: 'MIG, TIG and stick', dates: 'Summer 2025', where: 'Long Island, NY' },
 ];
 
