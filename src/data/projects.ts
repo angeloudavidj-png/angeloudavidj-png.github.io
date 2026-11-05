@@ -4,6 +4,11 @@
 import type { ImageMetadata } from 'astro';
 import becEvtol from '../assets/figures/bec-evtol.png';
 import evtolLinkagePod from '../assets/figures/evtol-linkage-pod.png';
+import evtolSwMechHover from '../assets/figures/evtol-sw-mech-hover.png';
+import evtolSwMechTransition from '../assets/figures/evtol-sw-mech-transition.png';
+import evtolSwMechCruise from '../assets/figures/evtol-sw-mech-cruise.png';
+import evtolSwPodSide from '../assets/figures/evtol-sw-pod-side.png';
+import evtolSwPodIso from '../assets/figures/evtol-sw-pod-iso.png';
 import fftPsd from '../assets/figures/fft-psd.png';
 import gnssRtkPpk from '../assets/figures/gnss-rtk-ppk.png';
 import tgTiltAssembled from '../assets/figures/tg-tilt-assembled.png';
@@ -573,11 +578,39 @@ export const projects: Project[] = [
         check: '1° stepped sweep of the assembly. Limit 15 mm.',
       },
     ],
+    links: [{ label: 'Interactive tilt simulation', href: '/evtol-tilt-pod.html' }],
     figure: {
-      src: evtolLinkagePod,
-      alt: 'Two technical plots: the tilt linkage drawn at 0, 45 and 90 degrees of tilt beside the pinion, and a pod cross section showing the rack, pinion, twin links and servo body inside a 67 mm shell.',
-      caption: 'Tilt linkage at 0°, 45° and 90° (crank 14 mm, link 35 mm), and the pod section at Ø67.',
+      src: evtolSwMechTransition,
+      alt: 'Gray SolidWorks side view of the tilt mechanism at 45 degrees, with the motor angled up and forward on its cradle, a twin link down to the rack, and the pinion meshed on top of the rack under the servo.',
+      caption: 'SolidWorks assembly at 45° tilt, with the shell and prop hidden. Rack travel 10.61 mm, servo 75.99°, link to crank 82.93°.',
     },
+    gallery: [
+      {
+        src: evtolSwMechHover,
+        alt: 'Gray SolidWorks side view of the tilt mechanism in hover, with the motor pointing straight up and the rack at its forward position.',
+        caption: 'Hover, 0° tilt. Rack travel 0 mm, servo 0°, link to crank 51.18°.',
+      },
+      {
+        src: evtolSwMechCruise,
+        alt: 'Gray SolidWorks side view of the tilt mechanism in cruise, with the motor pointing forward and the rack at its aft position.',
+        caption: 'Cruise, 90° tilt. Rack travel 21.30 mm, servo 152.55°, link to crank 51.91°.',
+      },
+      {
+        src: evtolSwPodSide,
+        alt: 'Gray SolidWorks side view of the full pod in hover, with a closed shell, notches along the top, and the prop shown as a flat line.',
+        caption: 'Full pod in hover. The prop is a flat 254 mm disc, seen edge-on, and pod length is a placeholder.',
+      },
+      {
+        src: evtolSwPodIso,
+        alt: 'SolidWorks isometric view of the pod in cruise, with the 254 mm prop disc at the front of the shell and openings along the shell.',
+        caption: 'Full pod in cruise, in the SolidWorks isometric view, which shows the pod rolled 90°.',
+      },
+      {
+        src: evtolLinkagePod,
+        alt: 'Two technical plots: the tilt linkage drawn at 0, 45 and 90 degrees of tilt beside the pinion, and a pod cross section showing the rack, pinion, twin links and servo body inside a 67 mm shell.',
+        caption: 'Linkage geometry at 0°, 45° and 90° (crank 14 mm, link 35 mm), and the pod section at Ø67.',
+      },
+    ],
   },
 ];
 
