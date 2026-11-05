@@ -22,6 +22,7 @@ import bergrRetrievalCad from '../assets/figures/bergr-retrieval-cad.png';
 import bergrScoutFea from '../assets/figures/bergr-scout-fea.jpg';
 import bergrRetrievalFea from '../assets/figures/bergr-retrieval-fea.jpg';
 import bergrWindTunnel from '../assets/figures/bergr-wind-tunnel.jpg';
+import vtiFlight from '../assets/figures/vti-altax-flight.jpg';
 import vtiMcity from '../assets/figures/vti-mcity.jpg';
 import vtiMounted from '../assets/figures/vti-mounted.png';
 import vtiHullCad from '../assets/figures/vti-hull-cad.jpg';
@@ -235,11 +236,16 @@ export const projects: Project[] = [
       },
     ],
     figure: {
-      src: vtiMcity,
-      alt: 'Freefly Alta X octorotor on an asphalt test track with its propellers removed and a red payload box attached beneath the frame.',
-      caption: 'Preliminary payload box attached under the Freefly Alta X at MCity, with propellers removed for ground testing.',
+      src: vtiFlight,
+      alt: 'Freefly Alta X drone in the air over the MCity test site against a blue sky, with a red preliminary payload box under the frame.',
+      caption: 'Preliminary payload box flying on the Freefly Alta X at MCity under RC control.',
     },
     gallery: [
+      {
+        src: vtiMcity,
+        alt: 'Freefly Alta X octorotor on an asphalt test track with its propellers removed and a red payload box attached beneath the frame.',
+        caption: 'Preliminary payload box attached under the Freefly Alta X at MCity, with propellers removed for ground testing.',
+      },
       {
         src: vtiMounted,
         alt: 'Close-up of a black payload enclosure mounted beneath the Alta X carbon frame, indoors on a workbench.',
