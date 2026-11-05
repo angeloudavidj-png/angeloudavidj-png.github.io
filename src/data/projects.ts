@@ -524,12 +524,12 @@ export const projects: Project[] = [
   {
     slug: 'evtol-tilt-rotor',
     title: 'eVTOL Tilt-Rotor Demonstrator',
-    context: 'Subscale tilt-rotor aircraft, independent project',
+    context: 'Subscale tilt-rotor aircraft in SolidWorks, independent project',
     dates: '2026 to present',
     status: 'in progress',
     role: 'Solo project',
     summary:
-      'A personal project to design and build a subscale eVTOL tilt-rotor with four tilting rotors, a V-tail and a span of about 1.2 m. The first rack-and-pinion tilt pod is modeled in SolidWorks and checked against its design targets.',
+      'A personal project to design and build a subscale eVTOL tilt-rotor with four tilting rotors, a V-tail and a span of about 1.2 m. The first rack-and-pinion tilt pod is a working SolidWorks assembly, checked against its design targets.',
     goal:
       'Design a tilt pod that swings a rotor from hover to cruise with one servo, stays within 160° of servo travel, holds at least a 35° link-to-crank angle, and keeps the prop disc 15 mm from the pod and wing.',
     progress: [
