@@ -13,6 +13,9 @@ import bergrRover from '../assets/figures/bergr-rover.png';
 import bergrDock from '../assets/figures/bergr-dock.png';
 import bergrScoutCad from '../assets/figures/bergr-scout-cad.png';
 import bergrRetrievalCad from '../assets/figures/bergr-retrieval-cad.png';
+import bergrScoutFea from '../assets/figures/bergr-scout-fea.jpg';
+import bergrRetrievalFea from '../assets/figures/bergr-retrieval-fea.jpg';
+import bergrWindTunnel from '../assets/figures/bergr-wind-tunnel.jpg';
 import vtiMcity from '../assets/figures/vti-mcity.jpg';
 import vtiMounted from '../assets/figures/vti-mounted.png';
 import vtiHullCad from '../assets/figures/vti-hull-cad.jpg';
@@ -137,6 +140,21 @@ export const projects: Project[] = [
         src: bergrRetrievalCad,
         alt: 'Siemens NX CAD model of the retrieval hexacopter in isometric view, with its arm and soft end effector hanging below the frame.',
         caption: 'Retrieval drone with arm and end effector in Siemens NX, from the preliminary design review.',
+      },
+      {
+        src: bergrScoutFea,
+        alt: 'Ansys total deformation plot of the scout drone landing gear, with its legend showing a maximum of 0.0085428 m at the skid.',
+        caption: 'Scout landing gear in Ansys under a 50 N touchdown plus 25 N sideways: 8.54 mm of lateral lean.',
+      },
+      {
+        src: bergrRetrievalFea,
+        alt: 'Ansys von Mises stress plot of the retrieval drone landing gear, with its legend showing a maximum of 2.7538e8 Pa.',
+        caption: 'Retrieval landing gear in Ansys under a 12 kN vertical load: 275 MPa peak stress, about the Al 6061-T6 yield.',
+      },
+      {
+        src: bergrWindTunnel,
+        alt: 'Scout drone mounted in the test section of the University of Michigan 2 by 2 foot wind tunnel, seen through the glass.',
+        caption: 'Scout drone in the U-M 2x2 ft wind tunnel, tested at 10 to 40 mph.',
       },
       {
         src: bergrScout,
