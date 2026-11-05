@@ -3,6 +3,7 @@
 // that are not in those sources.
 import type { ImageMetadata } from 'astro';
 import becEvtol from '../assets/figures/bec-evtol.png';
+import evtolLinkagePod from '../assets/figures/evtol-linkage-pod.png';
 import fftPsd from '../assets/figures/fft-psd.png';
 import gnssRtkPpk from '../assets/figures/gnss-rtk-ppk.png';
 import tgTiltAssembled from '../assets/figures/tg-tilt-assembled.png';
@@ -519,6 +520,64 @@ export const projects: Project[] = [
       caption: 'Nominal against fault PSDs. The extra peaks are the injected bearing defect and imbalance.',
     },
     links: [{ label: 'Source code', href: 'https://github.com/angeloudavidj-png/px4-vibration-fft' }],
+  },
+  {
+    slug: 'evtol-tilt-rotor',
+    title: 'eVTOL Tilt-Rotor Demonstrator',
+    context: 'Subscale tilt-rotor aircraft, independent project',
+    dates: '2026 to present',
+    status: 'in progress',
+    role: 'Solo project',
+    summary:
+      'A personal project to design and build a subscale eVTOL tilt-rotor with four tilting rotors, a V-tail and a span of about 1.2 m. The first rack-and-pinion tilt pod is modeled in SolidWorks and checked against its design targets.',
+    goal:
+      'Design a tilt pod that swings a rotor from hover to cruise with one servo, stays within 160° of servo travel, holds at least a 35° link-to-crank angle, and keeps the prop disc 15 mm from the pod and wing.',
+    progress: [
+      'One tilt pod assembled in SolidWorks. All eight first-target checks passed at 0° to 90° of tilt.',
+      'Motor height and servo dimensions are placeholders until measured, so the pod is not ready to print.',
+      'Wing, V-tail, rear pods and hover balance are calculated only. No hardware yet.',
+    ],
+    did: [
+      'Found that the earlier rack travel equation only worked with an 8 mm crank, while the design called for 22 mm.',
+      'Resized the linkage to a 14 mm crank and 35 mm link, then checked it in a SolidWorks assembly.',
+      'Grew the pod from Ø55 to Ø67 so the servo, gears and twin links fit with room for the frame.',
+      'Moved the front rotors ahead of the wing, because a disc under it could not clear both the pod and the wing by 15 mm.',
+      'Changed hover balance to thrust-weighted, so the V-tail rotors can sit far aft. Predicted hover load at 2.5 kg is about 0.75 kg per front motor and 0.50 kg per rear motor.',
+    ],
+    next: [
+      'Measure the real motor and servo, update the model and re-run the checks.',
+      'Solve the outer link fastener, since a socket head M3 hits the shell by hand calculation.',
+      'Run a SolidWorks Motion Study and add bearings and bolts.',
+      'Print the mechanism and measure its travel on the bench.',
+      'Build the wing, V-tail and rear pods, then check tail volume and pitch stability.',
+    ],
+    results: [
+      {
+        value: '21.30 mm',
+        label: 'Rack travel in the SolidWorks assembly',
+        check: 'Measured in the assembly. Target 21.3 ± 0.1 mm.',
+      },
+      {
+        value: '152.55°',
+        label: 'Servo rotation from hover to cruise',
+        check: 'Measured in the assembly. Limit 160°.',
+      },
+      {
+        value: '51.18°',
+        label: 'Minimum link-to-crank angle',
+        check: '1° stepped sweep of the assembly. Limit 35°.',
+      },
+      {
+        value: '18.23 mm',
+        label: 'Closest prop disc to pod',
+        check: '1° stepped sweep of the assembly. Limit 15 mm.',
+      },
+    ],
+    figure: {
+      src: evtolLinkagePod,
+      alt: 'Two technical plots: the tilt linkage drawn at 0, 45 and 90 degrees of tilt beside the pinion, and a pod cross section showing the rack, pinion, twin links and servo body inside a 67 mm shell.',
+      caption: 'Tilt linkage at 0°, 45° and 90° (crank 14 mm, link 35 mm), and the pod section at Ø67.',
+    },
   },
 ];
 
