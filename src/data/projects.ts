@@ -620,10 +620,10 @@ export const projects: Project[] = [
   },
 ];
 
-export const experience = [
-  { org: 'VTI Aerospace Research', role: 'Researcher, physical payload lead', dates: 'Jan 2026 to present', where: 'Ann Arbor, MI' },
+export const experience: { org: string; slug?: string; role: string; dates: string; where: string }[] = [
+  { org: 'VTI Aerospace Research', slug: 'vti-payload', role: 'Researcher, physical payload lead', dates: 'Jan 2026 to present', where: 'Ann Arbor, MI' },
   { org: 'ME 350 project', role: 'Hardware lead', dates: 'Jan to Apr 2026', where: 'Ann Arbor, MI' },
-  { org: 'BERGR, Belcan-sponsored student program', role: 'Mechanical engineer', dates: 'Aug 2025 to May 2026', where: 'Ann Arbor, MI' },
+  { org: 'BERGR, Belcan-sponsored student program', slug: 'bergr', role: 'Mechanical engineer', dates: 'Aug 2025 to May 2026', where: 'Ann Arbor, MI' },
   { org: 'Welding certification program', role: 'MIG, TIG and stick', dates: 'Summer 2025', where: 'Long Island, NY' },
 ];
 

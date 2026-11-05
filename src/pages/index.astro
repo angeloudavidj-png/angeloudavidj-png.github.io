@@ -16,6 +16,7 @@ const others = projects.filter((p) => !p.figure);
     <h1 id="hero-name">{profile.name}</h1>
     <p class="lede">Mechanical Engineer</p>
     <p class="school">{profile.school}</p>
+    <p class="details-note">Click a project name, or an underlined experience name, to see more details.</p>
   </section>
 
   <section id="work" class="work" aria-labelledby="work-title">
@@ -71,7 +72,7 @@ const others = projects.filter((p) => !p.figure);
       {experience.map((e) => (
         <li>
           <span class="t-dates">{e.dates}</span>
-          <span class="t-org">{e.org}</span>
+          <span class="t-org">{e.slug ? <a href={`${base}projects/${e.slug}/`}>{e.org}</a> : e.org}</span>
           <span class="t-role">{e.role}, {e.where}</span>
         </li>
       ))}
@@ -106,6 +107,14 @@ const others = projects.filter((p) => !p.figure);
 </Base>
 
 <style>
+  .details-note {
+    margin-top: 1rem;
+    font-size: 0.95rem;
+  }
+  .t-org a {
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
   .hero {
     padding-block: clamp(48px, 10vw, 120px) clamp(32px, 6vw, 64px);
   }
