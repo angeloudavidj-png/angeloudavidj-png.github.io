@@ -9,7 +9,6 @@ import evtolSwMechTransition from '../assets/figures/evtol-sw-mech-transition.pn
 import evtolSwMechCruise from '../assets/figures/evtol-sw-mech-cruise.png';
 import evtolSwPodSide from '../assets/figures/evtol-sw-pod-side.png';
 import evtolSwPodIso from '../assets/figures/evtol-sw-pod-iso.png';
-import fftPsd from '../assets/figures/fft-psd.png';
 import gnssRtkPpk from '../assets/figures/gnss-rtk-ppk.png';
 import tgTiltAssembled from '../assets/figures/tg-tilt-assembled.png';
 import tgTiltExploded from '../assets/figures/tg-tilt-exploded.png';
@@ -493,46 +492,6 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: 'px4-vibration-fft',
-    title: 'PX4 Vibration FFT',
-    context: 'Multirotor vibration diagnostics, independent project',
-    dates: 'May 2026',
-    status: 'complete',
-    role: 'Sole author',
-    summary:
-      'A Python pipeline that takes raw PX4 IMU logs, computes Welch PSDs and spectrograms, and classifies each spectral peak against expected rotor signatures to flag faults.',
-    goal:
-      'Show the frequency-domain checks a production multirotor or tilt-rotor program relies on (notch filter tuning, bearing health monitoring, fatigue accounting) working end to end, from raw flight log to diagnostic verdict.',
-    progress: [
-      'Four-stage pipeline built: log loader, Welch PSD and STFT spectrograms, peak classification, diagnostic verdict.',
-      'Validated on a synthetic Alta X hover with an injected rotor imbalance and bearing race defect.',
-      'Rerun on a real public PX4 log from a 200 mm quadrotor using its native-rate accelerometer stream.',
-      'Real-log limitations written up: the default PX4 logging profile is not vibration-grade, and gaps in the sample stream have to be interpolated.',
-    ],
-    did: [
-      'Built a four-stage chain: log loader, spectral estimation, peak classification, diagnostic verdict.',
-      'Validated on a synthetic Alta X hover with injected rotor imbalance and bearing race defects.',
-      'Extended the loader to the native-rate accelerometer stream and ran it on a real public PX4 log.',
-      'Documented the real-log limitations, including a sub-synchronous classifier edge case.',
-    ],
-    next: [
-      'Fix the classifier edge case that mislabels a sub-synchronous 1/3-P peak at 33.2 Hz on the real log.',
-      'Test on logs recorded with a vibration-grade logging profile.',
-      'It is a portfolio demonstration, not flight-cleared software.',
-    ],
-    results: [
-      { value: '< 1%', label: 'error recovering 75 Hz motor 1P and 150 Hz blade-pass in the synthetic case', check: 'Synthetic faults plus a real PX4 log' },
-      { value: '2 of 2', label: 'injected faults flagged: rotor imbalance and bearing race defect' },
-      { value: '99 Hz', label: 'motor 1P pulled from a real 200 mm quadrotor log, blade-pass at 195 Hz' },
-    ],
-    figure: {
-      src: fftPsd,
-      alt: 'Three stacked power spectral density plots for x, y and z acceleration, nominal and fault cases overlaid.',
-      caption: 'Nominal against fault PSDs. The extra peaks are the injected bearing defect and imbalance.',
-    },
-    links: [{ label: 'Source code', href: 'https://github.com/angeloudavidj-png/px4-vibration-fft' }],
-  },
-  {
     slug: 'evtol-tilt-rotor',
     title: 'eVTOL Tilt-Rotor Demonstrator',
     context: 'Subscale tilt-rotor aircraft in SolidWorks, independent project',
@@ -631,7 +590,7 @@ export const skills = [
   { group: 'Design', items: ['SolidWorks', 'Siemens NX', 'GD&T and tolerance stack-ups'] },
   { group: 'Analysis', items: ['Ansys FEA and CFD', 'HyperWorks / OptiStruct', 'MATLAB', 'Python (NumPy, SciPy, Pandas)'] },
   { group: 'Systems', items: ['Cameo SysML / MBSE', 'FMEA', 'SRR through FRR gate reviews'] },
-  { group: 'Test', items: ['Wind tunnel testing', 'Vibration analysis', 'RTK/PPK GNSS testing'] },
+  { group: 'Test', items: ['Wind tunnel testing', 'RTK/PPK GNSS testing'] },
   { group: 'Fabrication', items: ['Mill and lathe', 'MIG, TIG and stick welding', '3D printing', 'Soldering and avionics wiring'] },
 ];
 
