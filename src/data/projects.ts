@@ -34,6 +34,13 @@ import foReachTest from '../assets/figures/fo-reach-test.png';
 import foAlphaCell from '../assets/figures/fo-alpha-cell.png';
 import foNesting from '../assets/figures/fo-nesting.png';
 import foRailSpacing from '../assets/figures/fo-rail-spacing.png';
+import propStress from '../assets/figures/prop-stress.png';
+import propDisplacement from '../assets/figures/prop-displacement.png';
+import propThrust from '../assets/figures/prop-thrust.png';
+import propCpStarccm from '../assets/figures/prop-cp-starccm.png';
+import propCpXfoil from '../assets/figures/prop-cp-xfoil.png';
+import propCad from '../assets/figures/prop-cad.png';
+import propSlicer from '../assets/figures/prop-slicer.png';
 
 export const profile = {
   name: 'David Angelou',
@@ -574,6 +581,86 @@ export const projects: Project[] = [
         src: evtolLinkagePod,
         alt: 'Two technical plots: the tilt linkage drawn at 0, 45 and 90 degrees of tilt beside the pinion, and a pod cross section showing the rack, pinion, twin links and servo body inside a 67 mm shell.',
         caption: 'Linkage geometry at 0°, 45° and 90° (crank 14 mm, link 35 mm), and the pod section at Ø67.',
+      },
+    ],
+  },
+  {
+    slug: 'rc-propeller',
+    title: 'RC Propeller: CAD, CFD and FEA',
+    context: 'AEROSP 388 course labs, individual',
+    dates: 'Sep to Nov 2025',
+    status: 'complete',
+    role: 'Sole author, worked alone',
+    summary:
+      'A 5.0 in, three-blade aluminum propeller I modeled in Siemens NX, ran through CFD in STAR-CCM+, and checked for stress in NX NASTRAN using the CFD pressures as the load. I also 3D printed it.',
+    goal:
+      'Find out how much static thrust the propeller makes between 10,000 and 20,000 RPM, and whether the blades can carry the combined spin and aerodynamic load at 15,000 RPM. The blades are built from NACA 2412 sections, so the CFD setup was first checked on that same airfoil in 2D against XFOIL. The blade section sizes, twist schedule and general workflow came from the course handout.',
+    progress: [
+      'Lab 2: NX model, test-stand assembly, CAM milling toolpath and a 3D print of the propeller.',
+      'Lab 4: 2D airfoil validation, 3D rotating-blade CFD at three speeds, and FEA with the CFD pressures mapped onto the blade.',
+    ],
+    did: [
+      'Modeled the hub and three twisted blades in Siemens NX by lofting five NACA 2412 sections out to a 2.5 in radius, generated a milling toolpath in NX CAM, and 3D printed the propeller on a Bambu printer.',
+      'Meshed and solved 2D flow over a NACA 2412 at 0° to 8° and compared lift and pressure with XFOIL.',
+      'Simulated one blade in a 120° periodic domain at 10,000, 15,000 and 20,000 RPM, then tripled the result for full-propeller thrust.',
+      'Mapped the blade surface pressures from STAR-CCM+ onto a cyclic-symmetry NASTRAN model, along with the 15,000 RPM spin load.',
+    ],
+    next: [
+      'At a factor of safety near 28, the aluminum blade is far stronger than an RC prop needs. Rerun the same loads with the printed polymer and a thicker blade root, and find how much mass comes off while staying above a safety factor of 2.',
+    ],
+    results: [
+      { value: '≤ 1.1%', label: 'lift coefficient difference from XFOIL, NACA 2412 at 0° to 8°', check: 'Side-by-side CL table, five angles' },
+      { value: '1.46 / 3.15 / 5.81 N', label: 'static thrust at 10k, 15k and 20k RPM', check: 'Single-blade CFD × 3, within 4% of RPM² scaling from the 10k point' },
+      { value: '1,405 psi', label: 'peak von Mises stress, at the blade root, 15,000 RPM', check: 'NASTRAN nonlinear static, CTETRA(10). About 28x below 6061-T6 yield (40 ksi)' },
+      { value: '0.0036 in', label: 'maximum tip deflection under the same load', check: 'Same solve' },
+    ],
+    challenges: [
+      {
+        title: 'A drag coefficient that didn’t fit its own row',
+        detail:
+          'My submitted table listed CD = 0.0134 at 8°, about five times the 6° value, even though the drag force only rose by a third. Dividing each force by its coefficient should give the same dynamic pressure times area on every row: 0° to 6° give 57 to 64 N, the 8° row gives 15 N. The correct value is about 0.0033. I now run that force-over-coefficient check on every CFD table before reporting it.',
+      },
+      {
+        title: 'Drag that was never going to match XFOIL',
+        detail:
+          'Lift matched XFOIL closely but drag did not. STAR-CCM+ reports pressure plus skin-friction drag, while XFOIL’s CDp is pressure drag alone, so the comparison only holds for lift and the pressure distribution.',
+      },
+    ],
+    figure: {
+      src: propStress,
+      alt: 'Von Mises stress contour on a three-blade propeller, highest in green and yellow where each blade meets the hub.',
+      caption: 'Peak stress of 1,405 psi sits where each blade meets the hub. 15,000 RPM spin plus CFD pressure loads, Al 6061-T6.',
+    },
+    gallery: [
+      {
+        src: propThrust,
+        alt: 'Static thrust against RPM, three CFD points on a dashed RPM squared curve.',
+        caption: 'CFD thrust follows RPM² scaling from the 10,000 RPM point within 4%.',
+      },
+      {
+        src: propCpStarccm,
+        alt: 'STAR-CCM+ pressure coefficient along the NACA 2412 chord at zero angle of attack.',
+        caption: 'STAR-CCM+ pressure coefficient, NACA 2412 at 0°. Upper-surface peak near −0.57.',
+      },
+      {
+        src: propCpXfoil,
+        alt: 'XFOIL pressure coefficient plot for NACA 2412 at zero degrees, CL 0.2555.',
+        caption: 'XFOIL at the same condition: CL = 0.2555 against 0.2560 from STAR-CCM+.',
+      },
+      {
+        src: propDisplacement,
+        alt: 'Displacement contour on the propeller, largest at the blade tips.',
+        caption: 'Tip deflection peaks at 0.0036 in.',
+      },
+      {
+        src: propCad,
+        alt: 'Isometric NX model of a three-blade propeller with a cylindrical hub.',
+        caption: '5.0 in diameter. Each blade is lofted through five NACA 2412 sections, twisted from 43.6° near the hub to 12° at the tip.',
+      },
+      {
+        src: propSlicer,
+        alt: 'The propeller laid flat on a Bambu printer build plate in the slicer.',
+        caption: 'The same model sliced for printing in Bambu Studio.',
       },
     ],
   },
